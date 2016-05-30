@@ -36,8 +36,8 @@ runContainerSkipFront() {
         -v "$TRAVIS_BUILD_DIR":/home/jhipster/volume/generator-jhipster:ro \
         -e JHIPSTER_REPO_URL=https://github.com/pascalgrimaud/generator-jhipster.git \
         -e JHIPSTER_REPO_BRANCH=master \
-        -e JHIPSTER_TEST_FRONT=0
-        -e JHIPSTER_TEST_PACKAGING=0
+        -e JHIPSTER_TEST_FRONT=0 \
+        -e JHIPSTER_TEST_PACKAGING=0 \
         -t jhipster-tester
 }
 
@@ -50,8 +50,8 @@ runContainerSkipFrontNoDaemon() {
         -v "$TRAVIS_BUILD_DIR":/home/jhipster/volume/generator-jhipster:ro \
         -e JHIPSTER_REPO_URL=https://github.com/pascalgrimaud/generator-jhipster.git \
         -e JHIPSTER_REPO_BRANCH=master \
-        -e JHIPSTER_TEST_FRONT=0
-        -e JHIPSTER_TEST_PACKAGING=0
+        -e JHIPSTER_TEST_FRONT=0 \
+        -e JHIPSTER_TEST_PACKAGING=0 \
         -t jhipster-tester
 }
 
