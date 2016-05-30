@@ -16,7 +16,7 @@ install:
   - $JHIPSTER_INSTALL/04-cache.sh
   - docker version
   - docker-compose version
-  - docker build -t jhipster-tester docker/Dockerfile docker/
+  - docker build -t jhipster-tester -f docker/Dockerfile docker/
 script:
   - $JHIPSTER_TRAVIS/01-run-docker-tests.sh
   - $JHIPSTER_SCRIPTS/07-checkDocker.sh
