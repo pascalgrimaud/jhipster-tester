@@ -43,9 +43,9 @@ runContainerSkipFront() {
 #-------------------------------------------------------------------------------
 
 cd "$JHIPSTER_TRAVIS"
-runContainerNoDaemon app-mysql
 runContainer app-psql-es-noi18n
 runContainer app-mongodb
 runContainer app-cassandra
+runContainerNoDaemon app-mysql
 # runContainer app-gateway
 # runContainer app-hazelcast-cucumber
