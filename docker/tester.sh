@@ -30,6 +30,7 @@ cp "$VOLUME_APP"/.yo-rc.json /home/jhipster/app/.yo-rc.json
 ################################################################################
 npm set progress=false
 # test URL, test BRANCH
+log "[Phase-2] test URL, test BRANCH"
 if [ ! -z ${JHIPSTER_REPO_URL+x} ]; then
     log "[Phase-2] need to git clone"
     if [ ! -z ${JHIPSTER_REPO_BRANCH+x} ]; then
