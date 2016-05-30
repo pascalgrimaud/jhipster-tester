@@ -58,9 +58,9 @@ runContainerSkipFrontNoDaemon() {
 #-------------------------------------------------------------------------------
 
 cd "$JHIPSTER_TRAVIS"
-runContainerSkipFront app-psql-es-noi18n
-runContainerSkipFront app-mongodb
-runContainerSkipFront app-cassandra
+# runContainerSkipFront app-psql-es-noi18n
+# runContainerSkipFront app-mongodb
+# runContainerSkipFront app-cassandra
 runContainerSkipFrontNoDaemon app-mysql
 # runContainer app-gateway
 # runContainer app-hazelcast-cucumber
