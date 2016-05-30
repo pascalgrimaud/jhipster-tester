@@ -87,7 +87,6 @@ if [ -z ${BUILDTOOL+x} ]; then
     cd /home/jhipster/app/
     log "[Phase-4] npm link generator-jhipster"
     npm link generator-jhipster
-    if
     if [ $JHIPSTER_TEST_FRONT == 1 ]; then
         log "[Phase-4] yo jhipster --force --no-insight"
         yo jhipster --force --no-insight
