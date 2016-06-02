@@ -6,6 +6,7 @@
 VOLUME_APP=/home/jhipster/volume/app
 VOLUME_GENERATOR=/home/jhipster/volume/generator-jhipster
 VOLUME_M2=/home/jhipster/volume/.m2
+VOLUME_GRADLE=/home/jhipster/volume/.gradle
 VOLUME_NODE_MODULES=/home/jhipster/volume/node_modules
 
 ################################################################################
@@ -22,22 +23,30 @@ if [ ! -f "$VOLUME_APP"/.yo-rc.json ]; then
     log "[Phase-1] No .yo-rc.json file -> stop tester"
     exit 0
 fi
-log "[Phase-1] .yo-rc.json found!"
-cp "$VOLUME_APP"/.yo-rc.json /home/jhipster/app/.yo-rc.json
+if [[ (-f "$VOLUME_APP"/mvnw) || (-f "$VOLUME_APP"/gradlew) ]]; then
+    log "[Phase-1] existing project"
+    cp -R "$VOLUME_APP"/* /home/jhipster/app/
+    cp -R "$VOLUME_APP"/.* /home/jhipster/app/
+else
+    log "[Phase-1] .yo-rc.json found -> need to generate project"
+    rm -Rf /home/jhipster/app/*
+    rm -Rf /home/jhipster/app/.*
+    cp "$VOLUME_APP"/.yo-rc.json /home/jhipster/app/.yo-rc.json
+fi
+ls -al /home/jhipster/app/
+cat /home/jhipster/app/.yo-rc.json
 
 ################################################################################
 # Change generator-jhipster if needed
 ################################################################################
 npm set progress=false
 # test URL, test BRANCH
-log "[Phase-2] test URL, test BRANCH"
 if [ ! -z ${JHIPSTER_REPO_URL+x} ]; then
-    log "[Phase-2] need to git clone"
     if [ ! -z ${JHIPSTER_REPO_BRANCH+x} ]; then
-        log "[Phase-2] let's clone the branch $JHIPSTER_REPO_BRANCH of $JHIPSTER_REPO_URL"
+        log "[Phase-2] git clone -b $JHIPSTER_REPO_BRANCH $JHIPSTER_REPO_URL"
         git clone -b $JHIPSTER_REPO_BRANCH $JHIPSTER_REPO_URL /home/jhipster/generator/
     else
-        log "[Phase-2] let's clone the master of $JHIPSTER_REPO_BRANCH"
+        log "[Phase-2] git clone $JHIPSTER_REPO_BRANCH"
         git clone $JHIPSTER_REPO_URL /home/jhipster/generator/
     fi
     cd /home/jhipster/generator/
@@ -54,11 +63,12 @@ elif [ -f "$VOLUME_GENERATOR"/package.json ]; then
     log "[Phase-2] npm link"
     npm link
 else
-    log "[Phase-2] Use default generator-jhipster inside container"
+    version=$(cat /usr/lib/node_modules/generator-jhipster/package.json | grep \"version\": | awk '{print $2}' | sed 's/\"//g;s/,//g')
+    log "[Phase-2] Use default generator-jhipster inside container : $version"
 fi
 
 ################################################################################
-# cache node_modules and m2
+# cache node_modules, m2, gradle
 ################################################################################
 if [ -d "$VOLUME_NODE_MODULES" ]; then
     log "[Phase-3] Volume detected for node_modules"
@@ -74,17 +84,18 @@ else
     log "[Phase-3] No cache for m2"
 fi
 
+if [ -d "$VOLUME_GRADLE" ]; then
+    log "[Phase-3] Volume detected for gradle"
+    cp -R "$VOLUME_GRADLE" /home/jhipster/
+else
+    log "[Phase-3] No cache for gradle"
+fi
+
 ################################################################################
 # start generate project
 ################################################################################
 cd /home/jhipster/app/
-if [ -f mvnw ]; then
-    BUILDTOOL="maven"
-elif [ -f gradlew ]; then
-    BUILDTOOL="gradle"
-fi
-
-if [ -z ${BUILDTOOL+x} ]; then
+if [[ (! -f /home/jhipster/app/mvnw) && (! -f /home/jhipster/app/gradlew) ]]; then
     log "[Phase-4] Start generate project"
     cd /home/jhipster/app/
     log "[Phase-4] npm link generator-jhipster"
@@ -98,12 +109,6 @@ if [ -z ${BUILDTOOL+x} ]; then
     fi
 else
     log "[Phase-4] Existing project, skip regeneration"
-fi
-
-if [ -f mvnw ]; then
-    BUILDTOOL="maven"
-elif [ -f gradlew ]; then
-    BUILDTOOL="gradle"
 fi
 
 ################################################################################
@@ -123,17 +128,17 @@ fi
 ################################################################################
 if [ $JHIPSTER_TEST_BACK == 1 ]; then
     log "[Phase-6] Start back-end tests"
-    if [ "$BUILDTOOL" == "maven" ]; then
+    if [ -f /home/jhipster/app/mvnw ]; then
         ./mvnw test
-    elif [ "$BUILDTOOL" == "gradle" ]; then
+    elif [ -f /home/jhipster/app/gradlew ]; then
         ./gradlew test
     else
-        log "Error no maven/gradle project"
+        log "[Phase-6] Error no maven/gradle project"
         exit 6
     fi
     status=$?
     if [ $status -ne 0 ]; then
-        log "Error when launching back-end test"
+        log "[Phase-6] Error when launching back-end test"
         exit 6
     fi
 else
@@ -148,7 +153,7 @@ if [ $JHIPSTER_TEST_FRONT == 1 ] && [ -f "gulpfile.js" ]; then
     gulp test --no-notification
     status=$?
     if [ $status -ne 0 ]; then
-        log "Error when launching front-end test"
+        log "[Phase-7] Error when launching front-end test"
         exit 7
     fi
 else
@@ -160,11 +165,12 @@ fi
 ################################################################################
 if [ $JHIPSTER_TEST_PACKAGING == 1 ]; then
     log "[Phase-8] Start packaging"
-    if [ "$BUILDTOOL" == "maven" ]; then
+    if [ -f /home/jhipster/app/mvnw ]; then
         ./mvnw package -Pprod -DskipTests=true
-    elif [ "$BUILDTOOL" == "gradle" ]; then
+    elif [ -f /home/jhipster/app/gradlew ]; then
         ./gradlew bootRepackage -Pprod -x test
     else
+        log "[Phase-8] Error no maven/gradle project"
         exit 8
     fi
     status=$?

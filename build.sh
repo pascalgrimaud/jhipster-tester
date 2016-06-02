@@ -1,2 +1,3 @@
 #!/bin/bash
-docker build -t tester -f docker/Dockerfile docker/
+
+docker build -t jhipster-tester -f docker/Dockerfile docker/

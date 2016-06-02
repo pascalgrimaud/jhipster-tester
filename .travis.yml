@@ -18,5 +18,5 @@ install:
   - docker-compose version
   - docker build -t jhipster-tester -f docker/Dockerfile docker/
 script:
-  - $JHIPSTER_TRAVIS/01-run-docker-tests.sh
-  - docker ps -a
+  - ./build.sh
+  - docker-compose up

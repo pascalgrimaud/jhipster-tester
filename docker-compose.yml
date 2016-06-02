@@ -1,0 +1,21 @@
+version: '2'
+services:
+    jhipster-tester:
+        image: jhipster-tester
+        volumes:
+            ####################################################################
+            # the most important is here : mount the volume with .yo-rc.json   #
+            ####################################################################
+            - ./samples/app:/home/jhipster/volume/app:ro
+            ####################################################################
+            - ~/.m2:/home/jhipster/volume/.m2:ro
+            - ~/.gradle:/home/jhipster/volume/.gradle:ro
+            - ~/.embedmongo/:/home/jhipster/.embedmongo/:ro
+            # to speedup the front-end build, you can mount a volume with node_modules node4, npm3
+            #- ~/projects/pascalgrimaud/jhipster-speedup/node_modules:/home/jhipster/volume/node_modules:ro
+        environment:
+            # - JHIPSTER_REPO_URL=https://github.com/jhipster/generator-jhipster.git
+            # - JHIPSTER_REPO_BRANCH=master
+            - JHIPSTER_TEST_BACK=1
+            - JHIPSTER_TEST_FRONT=1
+            - JHIPSTER_TEST_PACKAGING=1
