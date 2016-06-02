@@ -71,9 +71,8 @@ inside the Docker image. The entities inside .jhipster/ folder will be generated
 
 ### Test another configuration
 
-You can simply edit the **samples/app/.yo-rc.json**
+You can simply edit the **samples/app/.yo-rc.json** or, you can change the volume in the **docker-compose.yml**
 
-Or, you can change the volume in the **docker-compose.yml**
 For example, to test a cassandra project:
 
 ```yaml
@@ -104,6 +103,8 @@ services:
 
 Edit the docker-compose.yml file, by putting the information to
 **JHIPSTER_REPO_URL** and **JHIPSTER_REPO_BRANCH**:
+
+You can use it to test a specific branch, when someone made a pull request.
 
 ```yaml
 version: '2'
@@ -160,11 +161,13 @@ services:
 
 ## Use Travis
 
-You have to:
+You are lazy and you prefer Travis to do it for you. You have to:
 - change: samples/app/.yo-rc.json
 - edit or remove: samples/app/.jhipster/
 
-Then you can pull request and see [jhipster-tester/pull_requests](https://travis-ci.org/pascalgrimaud/jhipster-tester/pull_requests)
+Then, you can pull request and see [jhipster-tester/pull_requests](https://travis-ci.org/pascalgrimaud/jhipster-tester/pull_requests)
+
+Of course, you can fork the project and link your Travis account with your github project.
 
 [travis-image]: https://travis-ci.org/pascalgrimaud/jhipster-tester.svg?branch=master
 [travis-url]: https://travis-ci.org/pascalgrimaud/jhipster-tester
