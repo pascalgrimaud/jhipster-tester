@@ -1,4 +1,4 @@
-FROM jhipster/jhipster:v3.4.0
+FROM jhipster/jhipster
 
 ENV JHIPSTER_TEST_BACK=1
 ENV JHIPSTER_TEST_FRONT=1
