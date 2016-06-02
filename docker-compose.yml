@@ -12,7 +12,7 @@ services:
             - ~/.gradle:/home/jhipster/volume/.gradle:ro
             - ~/.embedmongo/:/home/jhipster/.embedmongo/:ro
             # to speedup the front-end build, you can mount a volume with node_modules node4, npm3
-            #- ~/projects/pascalgrimaud/jhipster-speedup/node_modules:/home/jhipster/volume/node_modules:ro
+            #- ~/projects/jhipster-speedup/node_modules:/home/jhipster/volume/node_modules:ro
         environment:
             # - JHIPSTER_REPO_URL=https://github.com/jhipster/generator-jhipster.git
             # - JHIPSTER_REPO_BRANCH=master
