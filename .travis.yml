@@ -2,21 +2,15 @@ os:
   - linux
 services:
   - docker
-env:
-  global:
-    - JHIPSTER_CACHE_REPO=https://github.com/jhipster/jhipster-travis-cache.git
-    - JHIPSTER_CACHE_BRANCH=160516-springboot-135
-    - JHIPSTER_TRAVIS=$TRAVIS_BUILD_DIR/travis
-    - JHIPSTER_INSTALL=$JHIPSTER_TRAVIS/install
-    - JHIPSTER_SAMPLES=$JHIPSTER_TRAVIS/samples
-    - JHIPSTER_SCRIPTS=$JHIPSTER_TRAVIS/scripts
-    - JHIPSTER_DOCKER=$JHIPSTER_TRAVIS/docker
+pre-install:
+  - apt-cache madison docker-engine
+  - sudo apt-get -o Dpkg::Options::="--force-confnew" install -y docker-engine=1.11.1-0~trusty
+  - curl -L https://github.com/docker/compose/releases/download/1.7.1/docker-compose-"$(uname -s)"-"$(uname -m)" > docker-compose
+  - sudo mv docker-compose /usr/local/bin/docker-compose
+  - sudo chmod +x /usr/local/bin/docker-compose
 install:
-  - $JHIPSTER_INSTALL/01-install-docker-compose.sh
-  - $JHIPSTER_INSTALL/04-cache.sh
   - docker version
   - docker-compose version
   - docker build -t jhipster-tester -f docker/Dockerfile docker/
 script:
-  - ./build.sh
   - docker-compose up
