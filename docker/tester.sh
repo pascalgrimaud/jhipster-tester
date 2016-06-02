@@ -32,6 +32,9 @@ else
     rm -Rf /home/jhipster/app/*
     rm -Rf /home/jhipster/app/.*
     cp "$VOLUME_APP"/.yo-rc.json /home/jhipster/app/.yo-rc.json
+    if [ -d "$VOLUME_APP"/.jhipster ]; then
+        cp -R "$VOLUME_APP"/.jhipster /home/jhipster/app/
+    fi
 fi
 ls -al /home/jhipster/app/
 cat /home/jhipster/app/.yo-rc.json
