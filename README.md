@@ -166,4 +166,5 @@ You have to:
 
 Then you can pull request and see [jhipster-tester/pull_requests](https://travis-ci.org/pascalgrimaud/jhipster-tester/pull_requests)
 
+[travis-image]: https://travis-ci.org/pascalgrimaud/jhipster-tester.svg?branch=master
 [travis-url]: https://travis-ci.org/pascalgrimaud/jhipster-tester
