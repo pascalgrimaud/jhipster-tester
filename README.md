@@ -8,21 +8,19 @@ This project is used to test a JHipster project with Docker
 
 ### Installation
 
-First, clone this project :
+First, clone this project:
 
 ```
 git clone https://github.com/pascalgrimaud/jhipster-tester.git
 ```
 
-Build the Docker image :
-
-With script shell:
+Build the Docker image with script shell:
 
 ```
 ./build.sh
 ```
 
-Directly with Docker command:
+Or you can directly build with Docker command:
 
 ```
 docker build -t jhipster-tester -f docker/Dockerfile docker/
@@ -30,7 +28,7 @@ docker build -t jhipster-tester -f docker/Dockerfile docker/
 
 ### Quick test
 
-Here the default docker-compose.yml file :
+Here the default docker-compose.yml file:
 
 ```yaml
 version: '2'
@@ -57,7 +55,7 @@ services:
 
 ```
 
-Launch the default docker-compose.yml file :
+Launch the default docker-compose.yml file:
 
 ```
 docker-compose up
@@ -68,7 +66,7 @@ inside the Docker image.
 
 ### Test another configuration
 
-You can simply change the **samples/app/.yo-rc.json**
+You can simply edit the **samples/app/.yo-rc.json**
 
 Or, you can change the volume in the **docker-compose.yml**
 For example, to test a cassandra project:
@@ -100,7 +98,7 @@ services:
 ### Test the latest version of JHipster
 
 Edit the docker-compose.yml file, by putting the information to
-**JHIPSTER_REPO_URL** and **JHIPSTER_REPO_BRANCH** :
+**JHIPSTER_REPO_URL** and **JHIPSTER_REPO_BRANCH**:
 
 ```yaml
 version: '2'
@@ -111,7 +109,7 @@ services:
             ####################################################################
             # the most important is here : mount the volume with .yo-rc.json   #
             ####################################################################
-            - ./samples/app-social-websocket:/home/jhipster/volume/app:ro
+            - ./samples/app:/home/jhipster/volume/app:ro
             ####################################################################
             - ~/.m2:/home/jhipster/volume/.m2:ro
             - ~/.gradle:/home/jhipster/volume/.gradle:ro
@@ -140,7 +138,7 @@ services:
             ####################################################################
             # the most important is here : mount the volume with .yo-rc.json   #
             ####################################################################
-            - ./samples/app-social-websocket:/home/jhipster/volume/app:ro
+            - ./samples/app:/home/jhipster/volume/app:ro
             ####################################################################
             - ~/.m2:/home/jhipster/volume/.m2:ro
             - ~/.gradle:/home/jhipster/volume/.gradle:ro
