@@ -1,5 +1,9 @@
 # JHipster tester
 
+[![Build Status][travis-image]][travis-url]
+
+Travis build for pull requests: [jhipster-tester/pull_requests](https://travis-ci.org/pascalgrimaud/jhipster-tester/pull_requests)
+
 ## Introduction
 
 This project is used to test a JHipster project with Docker
@@ -12,6 +16,7 @@ First, clone this project:
 
 ```
 git clone https://github.com/pascalgrimaud/jhipster-tester.git
+cd jhipster-tester
 ```
 
 Build the Docker image with script shell:
@@ -62,7 +67,7 @@ docker-compose up
 ```
 
 It will test the **samples/app/.yo-rc.json** project, with the default generator-jhipster
-inside the Docker image.
+inside the Docker image. The entities inside .jhipster/ folder will be generated too.
 
 ### Test another configuration
 
@@ -152,3 +157,13 @@ services:
             - JHIPSTER_TEST_FRONT=0
             - JHIPSTER_TEST_PACKAGING=0
 ```
+
+## Use Travis
+
+You have to:
+- change: samples/app/.yo-rc.json
+- edit or remove: samples/app/.jhipster/
+
+Then you can pull request and see [jhipster-tester/pull_requests](https://travis-ci.org/pascalgrimaud/jhipster-tester/pull_requests)
+
+[travis-url]: https://travis-ci.org/pascalgrimaud/jhipster-tester
