@@ -23,51 +23,66 @@ if [ ! -f "$VOLUME_APP"/.yo-rc.json ]; then
     log "[Phase-1] No .yo-rc.json file -> stop tester"
     exit 0
 fi
+
+log "[Phase-1] prepare the working folder: /home/jhipster/app"
+cd /home/jhipster/
+rm -rf /home/jhipster/app/*
+rm -rf /home/jhipster/app/.*
+ls -al /home/jhipster/app/
+
 if [[ (-f "$VOLUME_APP"/mvnw) || (-f "$VOLUME_APP"/gradlew) ]]; then
-    log "[Phase-1] existing project"
-    cp -R "$VOLUME_APP"/* /home/jhipster/app/
-    cp -R "$VOLUME_APP"/.* /home/jhipster/app/
+    existing=1
+    log "[Phase-1] mvnw or gradlew found -> existing project"
+    log "[Phase-1] copy all files and folders except node_modules -> /home/jhipster/app"
+    cd "$VOLUME_APP"
+    cp -r `ls -A | grep -v "node_modules"` "/home/jhipster/app/"
 else
+    existing=0
     log "[Phase-1] .yo-rc.json found -> need to generate project"
-    rm -Rf /home/jhipster/app/*
-    rm -Rf /home/jhipster/app/.*
+    log "[Phase-1] copy .yo-rc.json"
     cp "$VOLUME_APP"/.yo-rc.json /home/jhipster/app/.yo-rc.json
     if [ -d "$VOLUME_APP"/.jhipster ]; then
+      log "[Phase-1] copy .jhipster"
         cp -R "$VOLUME_APP"/.jhipster /home/jhipster/app/
     fi
 fi
 ls -al /home/jhipster/app/
 cat /home/jhipster/app/.yo-rc.json
+echo " "
 
 ################################################################################
 # Change generator-jhipster if needed
 ################################################################################
 npm set progress=false
 # test URL, test BRANCH
-if [ ! -z ${JHIPSTER_REPO_URL+x} ]; then
-    if [ ! -z ${JHIPSTER_REPO_BRANCH+x} ]; then
-        log "[Phase-2] git clone -b $JHIPSTER_REPO_BRANCH $JHIPSTER_REPO_URL"
-        git clone -b $JHIPSTER_REPO_BRANCH $JHIPSTER_REPO_URL /home/jhipster/generator/
+if [ "$existing" == 0 ]; then
+    if [ ! -z ${JHIPSTER_REPO_URL+x} ]; then
+        if [ ! -z ${JHIPSTER_REPO_BRANCH+x} ]; then
+            log "[Phase-2] git clone -b $JHIPSTER_REPO_BRANCH $JHIPSTER_REPO_URL"
+            git clone -b $JHIPSTER_REPO_BRANCH $JHIPSTER_REPO_URL /home/jhipster/generator/
+        else
+            log "[Phase-2] git clone $JHIPSTER_REPO_BRANCH"
+            git clone $JHIPSTER_REPO_URL /home/jhipster/generator/
+        fi
+        cd /home/jhipster/generator/
+        log "[Phase-2] npm install"
+        npm install
+        log "[Phase-2] npm link"
+        npm link
+    elif [ -f "$VOLUME_GENERATOR"/package.json ]; then
+        log "[Phase-2] Volume detected for generator-jhipster: /home/jhipster/generator/"
+        cp -R "$VOLUME_GENERATOR" /home/jhipster/generator/
+        cd /home/jhipster/generator/
+        log "[Phase-2] npm install"
+        npm install
+        log "[Phase-2] npm link"
+        npm link
     else
-        log "[Phase-2] git clone $JHIPSTER_REPO_BRANCH"
-        git clone $JHIPSTER_REPO_URL /home/jhipster/generator/
+        version=$(cat /usr/lib/node_modules/generator-jhipster/package.json | grep \"version\": | awk '{print $2}' | sed 's/\"//g;s/,//g')
+        log "[Phase-2] Use default generator-jhipster inside container : $version"
     fi
-    cd /home/jhipster/generator/
-    log "[Phase-2] npm install"
-    npm install
-    log "[Phase-2] npm link"
-    npm link
-elif [ -f "$VOLUME_GENERATOR"/package.json ]; then
-    log "[Phase-2] Volume detected for generator-jhipster: /home/jhipster/generator/"
-    cp -R "$VOLUME_GENERATOR" /home/jhipster/generator/
-    cd /home/jhipster/generator/
-    log "[Phase-2] npm install"
-    npm install
-    log "[Phase-2] npm link"
-    npm link
 else
-    version=$(cat /usr/lib/node_modules/generator-jhipster/package.json | grep \"version\": | awk '{print $2}' | sed 's/\"//g;s/,//g')
-    log "[Phase-2] Use default generator-jhipster inside container : $version"
+    log "[Phase-2] Existing project, no need generator-jhipster"
 fi
 
 ################################################################################
@@ -98,7 +113,7 @@ fi
 # start generate project
 ################################################################################
 cd /home/jhipster/app/
-if [[ (! -f /home/jhipster/app/mvnw) && (! -f /home/jhipster/app/gradlew) ]]; then
+if [ "$existing" == 0 ]; then
     log "[Phase-4] Start generate project"
     cd /home/jhipster/app/
     log "[Phase-4] npm link generator-jhipster"
@@ -112,18 +127,26 @@ if [[ (! -f /home/jhipster/app/mvnw) && (! -f /home/jhipster/app/gradlew) ]]; th
     fi
 else
     log "[Phase-4] Existing project, skip regeneration"
+    if [ "$JHIPSTER_TEST_FRONT" == 1 ]; then
+        log "[Phase-4] npm install"
+        npm install
+    fi
 fi
 
 ################################################################################
 # generate existing entities
 ################################################################################
-if [ -d "/home/jhipster/app/.jhipster" ]; then
-    log "[Phase-5] generate entities"
-    for f in `ls /home/jhipster/app/.jhipster`; do
-        yo jhipster:entity ${f%.*} --regenerate --force
-    done
+if [ "$existing" == 0 ]; then
+    if [ -d "/home/jhipster/app/.jhipster" ]; then
+        log "[Phase-5] generate entities"
+        for f in `ls /home/jhipster/app/.jhipster`; do
+            yo jhipster:entity ${f%.*} --regenerate --force
+        done
+    else
+        log "[Phase-5] no entities"
+    fi
 else
-    log "[Phase-5] no entities"
+    log "[Phase-4] Existing project, skip regeneration entities"
 fi
 
 ################################################################################

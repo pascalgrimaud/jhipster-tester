@@ -6,7 +6,18 @@ Travis build for pull requests: [jhipster-tester/pull_requests](https://travis-c
 
 ## Introduction
 
-This project is used to test a JHipster project with Docker
+This project is used to generate and/or test a JHipster project with Docker.
+If the container find a .yo-rc.json alone, it will:
+- use the default generator-jhipster or clone a specific one
+- generate the project with `yo jhipster`
+- generate all entities
+- launch back-end tests with mvn or gradle
+- launch front-end tests with gulp
+- package the project with mvn or gradle
+If the container find an existing project, it will:
+- launch back-end tests with mvn or gradle
+- launch front-end tests with gulp
+- package the project with mvn or gradle
 
 ## How to use
 
