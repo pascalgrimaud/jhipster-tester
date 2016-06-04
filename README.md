@@ -4,7 +4,7 @@
 
 Travis build for pull requests: [jhipster-tester/pull_requests](https://travis-ci.org/pascalgrimaud/jhipster-tester/pull_requests)
 
-## Introduction
+# Introduction
 
 This project is used to generate and/or test a JHipster project with Docker.
 If the container find a .yo-rc.json alone, it will:
@@ -14,14 +14,24 @@ If the container find a .yo-rc.json alone, it will:
 - launch back-end tests with mvn or gradle
 - launch front-end tests with gulp
 - package the project with mvn or gradle
+
 If the container find an existing project, it will:
 - launch back-end tests with mvn or gradle
 - launch front-end tests with gulp
 - package the project with mvn or gradle
 
-## How to use
+# How to use
 
-### Installation
+## Prerequisites
+
+You have to install Docker and Docker Compose:
+
+- [Docker](https://docs.docker.com/installation/#installation)
+- [Docker Compose](https://docs.docker.com/compose/install)
+
+**Warning!** If you are using Docker Machine on Mac or Windows, your Docker daemon has only limited access to your OS X or Windows file system. Docker Machine tries to auto-share your /Users (OS X) or C:\Users\<username> (Windows) directory. So you have to clone the project folder under this directory to avoid any issues.
+
+## Installation
 
 First, clone this project:
 
@@ -42,7 +52,7 @@ Or you can directly build with Docker command:
 docker build -t jhipster-tester -f docker/Dockerfile docker/
 ```
 
-### Quick test
+## Quick test
 
 Here the default docker-compose.yml file:
 
@@ -80,7 +90,7 @@ docker-compose up
 It will test the **samples/app/.yo-rc.json** project, with the default generator-jhipster
 inside the Docker image. The entities inside .jhipster/ folder will be generated too.
 
-### Test another configuration
+## Test another configuration
 
 You can simply edit the **samples/app/.yo-rc.json** or, you can change the volume in the **docker-compose.yml**
 
@@ -110,7 +120,7 @@ services:
             - JHIPSTER_TEST_PACKAGING=1
 ```
 
-### Test the latest version of JHipster
+## Test the latest version of JHipster
 
 Edit the docker-compose.yml file, by putting the information to
 **JHIPSTER_REPO_URL** and **JHIPSTER_REPO_BRANCH**:
@@ -141,7 +151,7 @@ services:
             - JHIPSTER_TEST_PACKAGING=1
 ```
 
-### Skip front and packaging
+## Skip front tests and packaging
 
 Edit the docker-compose.yml file, by putting the 0 to
 **JHIPSTER_TEST_FRONT** and **JHIPSTER_TEST_PACKAGING** :
@@ -170,9 +180,9 @@ services:
             - JHIPSTER_TEST_PACKAGING=0
 ```
 
-## Use Travis
+# Use Travis
 
-You are lazy and you prefer Travis to do it for you. You have to:
+If you are lazy and you prefer using Travis, you have to:
 - change: samples/app/.yo-rc.json
 - edit or remove: samples/app/.jhipster/
 
