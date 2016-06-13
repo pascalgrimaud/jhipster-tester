@@ -4,28 +4,27 @@
     "baseName": "jhipster",
     "packageName": "com.mycompany.myapp",
     "packageFolder": "com/mycompany/myapp",
-    "serverPort": "8080",
-    "authenticationType": "session",
+    "serverPort": "8081",
+    "authenticationType": "jwt",
     "hibernateCache": "ehcache",
-    "clusteredHttpSession": "no",
-    "websocket": "no",
     "databaseType": "sql",
     "devDatabaseType": "h2Disk",
     "prodDatabaseType": "mysql",
     "searchEngine": "no",
-    "buildTool": "maven",
-    "enableSocialSignIn": false,
-    "rememberMeKey": "f429c7ff010616d3cb0b8f7b80e174d35ccd9e8d",
-    "useSass": false,
-    "applicationType": "monolith",
+    "buildTool": "gradle",
+    "jwtSecretKey": "4c28820b5dd78c28cd811a6a7dc676c128107562",
+    "enableTranslation": true,
+    "applicationType": "microservice",
     "testFrameworks": [
       "gatling"
     ],
     "jhiPrefix": "jhi",
-    "enableTranslation": true,
+    "skipClient": true,
+    "skipUserManagement": true,
     "nativeLanguage": "en",
     "languages": [
-      "en"
+      "en",
+      "ru"
     ]
   }
 }
