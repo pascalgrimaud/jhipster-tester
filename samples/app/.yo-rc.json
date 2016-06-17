@@ -1,23 +1,21 @@
-{
-  "generator-jhipster": {
-    "jhipsterVersion": "3.4.0",
-    "baseName": "jhipster",
-    "packageName": "com.mycompany.myapp",
-    "packageFolder": "com/mycompany/myapp",
+"generator-jhipster": {
+    "jhipsterVersion": "3.4.1",
+    "baseName": "testippondata",
+    "packageName": "com.test.data",
+    "packageFolder": "com/test/data",
     "serverPort": "8080",
-    "authenticationType": "session",
-    "hibernateCache": "ehcache",
+    "authenticationType": "jwt",
+    "hibernateCache": "hazelcast",
     "clusteredHttpSession": "no",
-    "websocket": "no",
+    "websocket": "spring-websocket",
     "databaseType": "sql",
     "devDatabaseType": "h2Disk",
-    "prodDatabaseType": "mysql",
+    "prodDatabaseType": "postgresql",
     "searchEngine": "no",
     "buildTool": "maven",
-    "enableSocialSignIn": false,
-    "rememberMeKey": "f429c7ff010616d3cb0b8f7b80e174d35ccd9e8d",
-    "useSass": false,
-    "applicationType": "monolith",
+    "jwtSecretKey": "e031e32bdc9a54534c50a0c9ffe6265f0636f269",
+    "useSass": true,
+    "applicationType": "gateway",
     "testFrameworks": [
       "gatling"
     ],
@@ -25,7 +23,8 @@
     "enableTranslation": true,
     "nativeLanguage": "en",
     "languages": [
-      "en"
-    ]
+      "en",
+      "fr"
+    ],
+    "enableSocialSignIn": false
   }
-}
