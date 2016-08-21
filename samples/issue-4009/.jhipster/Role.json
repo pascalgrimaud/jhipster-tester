@@ -1,0 +1,25 @@
+{
+    "fluentMethods": true,
+    "relationships": [
+        {
+            "relationshipType": "one-to-many",
+            "relationshipName": "roleAuthorities",
+            "otherEntityName": "roleAuthority",
+            "otherEntityRelationshipName": "role"
+        }
+    ],
+    "fields": [
+        {
+            "fieldName": "name",
+            "fieldType": "String",
+            "fieldValidateRules": [
+                "required"
+            ]
+        }
+    ],
+    "changelogDate": "20160821085526",
+    "entityTableName": "role",
+    "dto": "no",
+    "pagination": "no",
+    "service": "serviceClass"
+}
