@@ -6,7 +6,7 @@ services:
             ####################################################################
             # the most important is here : mount the volume with .yo-rc.json   #
             ####################################################################
-            - ./samples/app:/home/jhipster/volume/app:ro
+            - ./samples/issue-4009:/home/jhipster/volume/app:ro
             ####################################################################
             - ~/.m2:/home/jhipster/volume/.m2:ro
             - ~/.gradle:/home/jhipster/volume/.gradle:ro
